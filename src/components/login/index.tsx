@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import { getToken } from '../../lib/auth'
 import { useAuthService } from '../../services/login'
 import { useEffect } from 'react'
+import { routes } from '@/utils/routes'
 
 const schema = z.object({
   email: z.string().email('Email inválido'),
@@ -21,7 +22,7 @@ export const LoginForm = () => {
   useEffect(() => {
     const token = getToken()
     if (token) {
-      router.push('/dashboard')
+      router.push(routes.dashboard)
     }
   }, [router])
 
@@ -35,7 +36,7 @@ export const LoginForm = () => {
 
   const onSubmit = async (data: FormData) => {
     await handleLogin(data)
-    router.push('/dashboard')
+    router.push(routes.dashboard)
   }
 
   return (

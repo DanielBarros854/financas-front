@@ -2,6 +2,7 @@ import { AppBar, Toolbar, Typography, IconButton } from '@mui/material';
 import { Logout } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import { clearToken } from '../../lib/auth';
+import { routes } from '@/utils/routes';
 
 export default function Navbar() {
   const router = useRouter();
@@ -14,10 +15,10 @@ export default function Navbar() {
   return (
     <AppBar position="fixed">
       <Toolbar sx={{ justifyContent: 'space-between' }}>
-        <Typography 
-          variant="h6" 
-          component="div" 
-          sx={{ 
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{
             cursor: 'pointer',
             '&:hover': {
               opacity: 0.8
@@ -27,7 +28,7 @@ export default function Navbar() {
             overflow: 'hidden',
             textOverflow: 'ellipsis'
           }}
-          onClick={() => router.push('/dashboard')}
+          onClick={() => router.push(routes.dashboard)}
         >
           Sistema Financeiro
         </Typography>
