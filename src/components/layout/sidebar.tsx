@@ -1,11 +1,14 @@
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, ListItemButton } from '@mui/material';
-import { Dashboard, AccountBalance } from '@mui/icons-material';
+import { Dashboard, MoneyOff, CurrencyBitcoin, AttachMoney } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { routes } from '@/utils/routes';
 
 const menuItems = [
-  { text: 'Dashboard', icon: <Dashboard />, path: '/dashboard' },
-  { text: 'Finanças', icon: <AccountBalance />, path: '/financas' },
+  { text: 'Dashboard', icon: <Dashboard />, path: routes.dashboard },
+  { text: 'Ganhos', icon: <AttachMoney />, path: routes.earnings },
+  { text: 'Despesas', icon: <MoneyOff />, path: routes.expenses },
+  { text: 'Investimentos', icon: <CurrencyBitcoin />, path: routes.investments },
 ];
 
 export default function Sidebar() {
@@ -33,7 +36,7 @@ export default function Sidebar() {
     >
       <List>
         {menuItems.map((item) => (
-          <ListItem 
+          <ListItem
             key={item.text}
             disablePadding
             sx={{
@@ -54,7 +57,7 @@ export default function Sidebar() {
                 px: 2.5,
               }}
             >
-              <ListItemIcon sx={{ 
+              <ListItemIcon sx={{
                 color: router.pathname === item.path ? 'primary.main' : 'inherit',
                 minWidth: 0,
                 mr: isOpen ? 3 : 'auto',
@@ -62,7 +65,7 @@ export default function Sidebar() {
               }}>
                 {item.icon}
               </ListItemIcon>
-              <ListItemText 
+              <ListItemText
                 primary={item.text}
                 sx={{
                   color: router.pathname === item.path ? 'primary.main' : 'inherit',
