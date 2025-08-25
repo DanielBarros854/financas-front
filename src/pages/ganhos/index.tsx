@@ -1,7 +1,5 @@
-export default function DashboardPage() {
-  return (
-    <div>
-      <h1>Ganhos</h1>
-    </div>
-  );
+import GanhosTemplate from '@/templates/ganhos'
+
+export default function GanhosPage() {
+  return <GanhosTemplate />
 }
