@@ -1,0 +1,36 @@
+/* Garantir que as notificações do SweetAlert2 apareçam no topo de todos os modais */
+.swal2-container {
+  z-index: 9999 !important;
+}
+
+.swal2-popup {
+  z-index: 10000 !important;
+}
+
+/* Toast notifications no topo direito */
+.swal2-toast {
+  z-index: 10001 !important;
+}
+
+/* Garantir que apareça acima de modais do Material-UI */
+.swal2-container,
+.swal2-popup,
+.swal2-toast {
+  position: relative;
+  z-index: 9999 !important;
+}
+
+/* Ajuste para modais do Material-UI */
+.MuiDialog-root {
+  z-index: 1300;
+}
+
+.MuiModal-root {
+  z-index: 1300;
+}
+
+/* Notificações sempre no topo */
+.swal2-container {
+  position: fixed !important;
+  z-index: 9999 !important;
+}

@@ -14,7 +14,7 @@ export const CREATE_GANHO = gql`
 `
 
 export const UPDATE_GANHO = gql`
-  mutation earningUpdate($id: ID!, $fields: EarningUpdateInput!) {
+  mutation earningUpdate($id: Int!, $fields: EarningUpdateInput!) {
     earningUpdate(id: $id, fields: $fields) {
       id
       name
@@ -27,7 +27,9 @@ export const UPDATE_GANHO = gql`
 `
 
 export const DELETE_GANHO = gql`
-  mutation earningRemove($id: ID!) {
-    earningRemove(id: $id)
+  mutation earningRemove($id: Int!) {
+    earningRemove(id: $id) {
+      removed
+    }
   }
 ` 

@@ -6,6 +6,7 @@ import Sidebar from '../components/layout/sidebar'
 import { Box } from '@mui/material'
 import PrivateRoute from '../components/auth/PrivateRoute'
 import { useRouter } from 'next/router'
+import '../styles/notifications.css'
 
 export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter();

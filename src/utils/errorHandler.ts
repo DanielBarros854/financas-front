@@ -1,5 +1,5 @@
 import { ApolloError } from '@apollo/client'
-import Swal from 'sweetalert2'
+import { showError } from './notifications'
 
 export const handleError = (error: unknown, customMessage?: string) => {
   console.error(error)
@@ -14,9 +14,5 @@ export const handleError = (error: unknown, customMessage?: string) => {
     message = customMessage
   }
 
-  Swal.fire({
-    icon: 'error',
-    title: 'Erro',
-    text: message,
-  })
+  showError(message)
 } 

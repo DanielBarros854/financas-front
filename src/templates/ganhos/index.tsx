@@ -19,7 +19,10 @@ import {
 import { Add, Edit, Delete, AttachMoney } from '@mui/icons-material'
 import { useGanhosService } from '@/services/ganhos'
 import { GanhoInput, Ganho } from '@/graphql/types/ganhos'
-import DeleteConfirmDialog from '@/components/common/DeleteConfirmDialog'
+import { showConfirm, showSuccess } from '@/utils/notifications'
+import { handleError } from '@/utils/errorHandler'
+import { formatCurrency } from '@/utils/formatCurrency'
+import { CircularProgressComponent } from '@/components/common/loading'
 
 interface GanhoFormData {
   name: string
@@ -37,10 +40,6 @@ export default function GanhosTemplate() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingGanho, setEditingGanho] = useState<string | null>(null)
   const [formData, setFormData] = useState<GanhoFormData>(initialFormData)
-  const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; ganho: Ganho | null }>({
-    open: false,
-    ganho: null
-  })
 
   const {
     ganhos,
@@ -93,36 +92,24 @@ export default function GanhosTemplate() {
 
       if (editingGanho) {
         await handleUpdateGanho(editingGanho, ganhoData)
+        showSuccess('Ganho atualizado com sucesso!')
       } else {
         await handleCreateGanho(ganhoData)
+        showSuccess('Ganho criado com sucesso!')
       }
 
       handleCloseModal()
     } catch (error) {
-      console.error('Erro ao salvar ganho:', error)
+      handleError(error)
     }
   }
 
-  const handleDeleteClick = (ganho: Ganho) => {
-    setDeleteDialog({ open: true, ganho })
-  }
-
-  const handleDeleteConfirm = async () => {
-    if (!deleteDialog.ganho) return
-
+  const handleDeleteConfirm = async (ganho: Ganho) => {
     try {
-      await handleDeleteGanho(deleteDialog.ganho.id)
-      setDeleteDialog({ open: false, ganho: null })
+      await handleDeleteGanho(ganho.id)
     } catch (error) {
-      console.error('Erro ao deletar ganho:', error)
+      handleError(error)
     }
-  }
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(value)
   }
 
   const formatDate = (date: string) => {
@@ -130,11 +117,7 @@ export default function GanhosTemplate() {
   }
 
   if (loading) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
-        <CircularProgress />
-      </Box>
-    )
+    return CircularProgressComponent()
   }
 
   return (
@@ -187,7 +170,14 @@ export default function GanhosTemplate() {
                     </IconButton>
                     <IconButton
                       size="small"
-                      onClick={() => handleDeleteClick(ganho)}
+                      onClick={() => showConfirm({
+                        title: 'Tem certeza que deseja excluir este ganho?',
+                        text: `Ganho: ${ganho.name}`,
+                        icon: 'warning',
+                        confirmButtonText: 'Sim',
+                        cancelButtonText: 'Não',
+                        onConfirm: () => handleDeleteConfirm(ganho)
+                      })}
                       color="error"
                     >
                       <Delete />
@@ -263,14 +253,6 @@ export default function GanhosTemplate() {
           </Button>
         </DialogActions>
       </Dialog>
-
-      <DeleteConfirmDialog
-        open={deleteDialog.open}
-        onClose={() => setDeleteDialog({ open: false, ganho: null })}
-        onConfirm={handleDeleteConfirm}
-        itemName={deleteDialog.ganho?.name}
-        message="Tem certeza que deseja excluir este ganho:"
-      />
     </Box>
   )
 }

@@ -19,6 +19,7 @@ import {
   DeleteGanhoMutationVariables,
   GetGanhosQueryResponse
 } from '../graphql/types/ganhos'
+import { showSuccess } from '@/utils/notifications'
 
 export const useGanhosService = () => {
   const [createGanho, { loading: creating, error: createError }] = useMutation<
@@ -100,6 +101,8 @@ export const useGanhosService = () => {
       }
 
       await refetch()
+
+      showSuccess('Ganho excluído com sucesso!')
 
       return true
     } catch (error) {
