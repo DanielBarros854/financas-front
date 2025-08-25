@@ -19,6 +19,7 @@ import {
 import { Add, Edit, Delete, AttachMoney } from '@mui/icons-material'
 import { useGanhosService } from '@/services/ganhos'
 import { GanhoInput, Ganho } from '@/graphql/types/ganhos'
+import DeleteConfirmDialog from '@/components/common/DeleteConfirmDialog'
 
 interface GanhoFormData {
   name: string
@@ -36,6 +37,10 @@ export default function GanhosTemplate() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingGanho, setEditingGanho] = useState<string | null>(null)
   const [formData, setFormData] = useState<GanhoFormData>(initialFormData)
+  const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; ganho: Ganho | null }>({
+    open: false,
+    ganho: null
+  })
 
   const {
     ganhos,
@@ -98,13 +103,18 @@ export default function GanhosTemplate() {
     }
   }
 
-  const handleDelete = async (id: string) => {
-    if (window.confirm('Tem certeza que deseja excluir este ganho?')) {
-      try {
-        await handleDeleteGanho(id)
-      } catch (error) {
-        console.error('Erro ao deletar ganho:', error)
-      }
+  const handleDeleteClick = (ganho: Ganho) => {
+    setDeleteDialog({ open: true, ganho })
+  }
+
+  const handleDeleteConfirm = async () => {
+    if (!deleteDialog.ganho) return
+
+    try {
+      await handleDeleteGanho(deleteDialog.ganho.id)
+      setDeleteDialog({ open: false, ganho: null })
+    } catch (error) {
+      console.error('Erro ao deletar ganho:', error)
     }
   }
 
@@ -150,7 +160,7 @@ export default function GanhosTemplate() {
 
       <Grid container spacing={3}>
         {ganhos.map((ganho: Ganho) => (
-          <Box sx={{ xs: 12, sm: 6, md: 4 }} key={ganho.id}>
+          <Box sx={{ width: { xs: '100%', sm: '50%', md: '33.33%' } }} key={ganho.id}>
             <Card>
               <CardContent>
                 <Box display="flex" justifyContent="space-between" alignItems="flex-start">
@@ -177,7 +187,7 @@ export default function GanhosTemplate() {
                     </IconButton>
                     <IconButton
                       size="small"
-                      onClick={() => handleDelete(ganho.id)}
+                      onClick={() => handleDeleteClick(ganho)}
                       color="error"
                     >
                       <Delete />
@@ -253,6 +263,14 @@ export default function GanhosTemplate() {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <DeleteConfirmDialog
+        open={deleteDialog.open}
+        onClose={() => setDeleteDialog({ open: false, ganho: null })}
+        onConfirm={handleDeleteConfirm}
+        itemName={deleteDialog.ganho?.name}
+        message="Tem certeza que deseja excluir este ganho:"
+      />
     </Box>
   )
 }
