@@ -69,7 +69,7 @@ export const useGanhosService = () => {
       const result = await updateGanho({
         variables: {
           id,
-          input: ganhoData
+          fields: ganhoData
         }
       })
 

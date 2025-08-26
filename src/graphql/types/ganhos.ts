@@ -13,12 +13,10 @@ export interface GanhoInput {
   date: string
 }
 
-// Query Types
 export interface GetGanhosQueryResponse {
   earnings: Ganho[]
 }
 
-// Mutation Types
 export interface CreateGanhoMutationResponse {
   earningAdd: Ganho
 }
@@ -33,7 +31,7 @@ export interface UpdateGanhoMutationResponse {
 
 export interface UpdateGanhoMutationVariables {
   id: string
-  input: Partial<GanhoInput>
+  fields: Partial<GanhoInput>
 }
 
 export interface DeleteGanhoMutationResponse {
