@@ -5,6 +5,7 @@
 
 .swal2-popup {
   z-index: 10000 !important;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !important;
 }
 
 /* Toast notifications no topo direito */
@@ -33,4 +34,18 @@
 .swal2-container {
   position: fixed !important;
   z-index: 9999 !important;
+}
+
+/* Garantir tipografia consistente nos elementos do SweetAlert2 */
+.swal2-title,
+.swal2-html-container,
+.swal2-actions,
+.swal2-confirm,
+.swal2-cancel,
+.swal2-styled,
+.swal2-input,
+.swal2-select,
+.swal2-textarea,
+.swal2-footer {
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !important;
 }
